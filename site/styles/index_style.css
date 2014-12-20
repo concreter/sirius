@@ -1,0 +1,52 @@
+*{
+    box-sizing: border-box;
+}
+#logo{
+    margin-top: 5%; 
+    text-align: center;
+    font-family: arial;
+}
+#logo a{
+    color: #000;
+    text-decoration: none;
+}
+form{
+    max-width: 20%;
+    min-width: 200px;
+    margin: 0px auto;
+}
+label{
+    font-family: arial;
+    font-weight: bold; 
+}
+input{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: gray;
+    font-family: arial;
+    font-weight: bold;
+    color: white;
+}
+.submit{
+    margin-top:10px;
+    transition: .2s
+}
+.submit:hover{
+    transform: scale(1.1, 1.1);
+    cursor: pointer;
+}
+.wrong{
+    background-color: #F02C35;   
+}
+#register_btn{
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+    font-family: arial;
+    color: black;
+}
+#register_wraper{
+    overflow: hidden;
+    display: none;
+}
