@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles/home_style.css">
     <script src="javascript/jquery.js"></script>
     <script src="javascript/game/game.js"></script>
+    <link rel="stylesheet" href="styles/chat.css">
 </head>
 <body>
    <input type="hidden" id="hdnSession" data-value='<?php echo $_SESSION['name'] ?>' />
@@ -18,9 +19,8 @@
         <a href="php_scripts/logout.php" id="logout">Log me off</a>
         <span id="user"><?php echo 'Loged in as <strong>', $_SESSION['name'], '</strong>'; ?></span>
     </div>
-
     <div id="wraper-bot">
-        <a href="#" id="reconnect">Reconnect to server</a>
+        <div class="status"></div>
     </div>
 </body>
 </html>

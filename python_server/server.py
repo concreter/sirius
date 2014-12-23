@@ -43,7 +43,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 		global client_ids
 		decoded = json.loads(message)
 		type = decoded["type"]
+		
 		if type == "connection__init":
+			
 			global index_counter
 
 			isConnected = 0
@@ -66,6 +68,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 				self.write_message(json.dumps(data))
 				data = {'type':"clients_list", 'message':get_all_clients()}
 				self.write_message(json.dumps(data))
+				
 		elif type:
 			pass
 
@@ -80,6 +83,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 			del client_ids[index]
 		except Exception:
 			pass
+		
 # handler end
 
 application = tornado.web.Application([
