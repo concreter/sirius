@@ -7,12 +7,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Home</title>
+    <link rel="stylesheet" href="styles/home_style.css">
+    <script src="javascript/jquery.js"></script>
+    <script src="javascript/game/game.js"></script>
 </head>
 <body>
+   <input type="hidden" id="hdnSession" data-value='<?php echo $_SESSION['name'] ?>' />
     <div id="wraper-top">
-        <a href="php_scripts/logout.php">Log me off</a>
-        <span id="user"><?php echo $_SESSION['name']; ?></span>
+        <a href="php_scripts/logout.php" id="logout">Log me off</a>
+        <span id="user"><?php echo 'Loged in as <strong>', $_SESSION['name'], '</strong>'; ?></span>
+    </div>
+
+    <div id="wraper-bot">
+        
     </div>
 </body>
 </html>
