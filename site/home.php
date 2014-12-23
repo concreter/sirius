@@ -20,7 +20,7 @@
     </div>
 
     <div id="wraper-bot">
-        
+        <a href="#" id="reconnect">Reconnect to server</a>
     </div>
 </body>
 </html>

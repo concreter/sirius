@@ -14,6 +14,19 @@ client_objects = []
 # counter which counts index numbers because i want to have ids and ws objects in sync
 index_counter = 0
 
+# clientID class, contains client information
+class ClientId:
+	def __init__(self, name):
+		self.name = name
+
+# function returns all clients in list
+def get_all_clients():
+	global client_ids
+	clients = []
+	for x in range(len(client_ids)):
+		clients.append(client_ids[x].name)
+	return clients
+
 # handler
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
@@ -21,26 +34,52 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 	def check_origin(self, origin):
 		return True
 
+	def open(self):
+		print("Someone trying to connect")
+
 	def on_message(self, message):
+
 		global client_objects
 		global client_ids
 		decoded = json.loads(message)
-		if decoded["type"] == "connection__init":
+		type = decoded["type"]
+		if type == "connection__init":
 			global index_counter
-			client_ids.insert(index_counter, decoded["data"])
-			client_objects.insert(index_counter, self)
-			index_counter = index_counter + 1
-			print("Client " + decoded["data"]["name"] + " connected")
-			print(str(client_ids))
+
+			isConnected = 0
+			for x in range(len(client_ids)):
+
+				if decoded["data"]["name"] == client_ids[x].name:
+					data = {'type':"connection__init", 'message':"error"}
+					self.write_message(json.dumps(data))
+					isConnected = 1
+
+			if isConnected == 0:
+
+				new_client = ClientId(decoded["data"]["name"])
+				client_ids.insert(index_counter, new_client)
+				client_objects.insert(index_counter, self)
+				index_counter = index_counter + 1
+
+				print("Client " + decoded["data"]["name"] + " connected")
+				data = {'type':"connection__init", 'message':"success"}
+				self.write_message(json.dumps(data))
+				data = {'type':"clients_list", 'message':get_all_clients()}
+				self.write_message(json.dumps(data))
+		elif type:
+			pass
 
 	def on_close(self):
+
 		global client_objects
 		global client_ids
-		index = client_objects.index(self)
-		print("Client " + client_ids[index]["name"] + " disconnected")
-		client_objects.remove(self)
-		del client_ids[index]
-
+		try:
+			index = client_objects.index(self)
+			print("Client " + client_ids[index].name + " disconnected")
+			client_objects.remove(self)
+			del client_ids[index]
+		except Exception:
+			pass
 # handler end
 
 application = tornado.web.Application([
