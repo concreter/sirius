@@ -19,6 +19,9 @@
         <a href="php_scripts/logout.php" id="logout">Log me off</a>
         <span id="user"><?php echo 'Loged in as <strong>', $_SESSION['name'], '</strong>'; ?></span>
     </div>
+    <div id="content">
+
+    </div>
     <div id="wraper-bot">
         <div class="status"></div>
     </div>

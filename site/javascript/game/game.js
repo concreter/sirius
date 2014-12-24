@@ -1,7 +1,8 @@
 $(function(){
 	
-	var status = $('.status');
-
+	var status = $('.status'),
+		content = $('#content');
+	
 	function ConnectServer(){
 		
 		var host = "ws://localhost:8877";
@@ -30,18 +31,57 @@ $(function(){
 			};
 
 			socket.onmessage = function(e) {
+				
 				recievedData = JSON.parse(e.data)
 
 				if(recievedData.type == 'connection__init') {
 					console.log(recievedData.message);
 					if(recievedData.message == 'success') {
+						// after logging in
 						loggedToServer = true;
+						
 						status.addClass('online');
 						status.removeClass('offline');
 						status.text("online");
+						
+						// page loading but i need to freeze script until its loaded
+						$.ajax({
+							url: "/sirius/site/lobby.html",
+							success: function(e){
+								$("#content").html(e);
+							},
+							async: false,
+							cache: false
+						})
+						
+						groupListRequest();
+						
+						$('#submit_game').click(function(e){
+						
+							data = {
+								type : 'group__init',
+								data : {
+									name : $('#game_name').val(),
+									type : 'default'
+								}
+							};
+							
+							if(data.data.name){
+								dataString = JSON.stringify(data);		
+							}
+							
+							socket.send(dataString);
+							
+							e.preventDefault();
+						
+						});
+									
 					} else {
+						
 						socket.close();
+						
 						existingConnect = true;
+						
 						status.text("There is opened connection to server please close it");
 						status.addClass('offline');
 						status.removeClass('online');
@@ -49,11 +89,48 @@ $(function(){
 				}
 
 				if(loggedToServer){
-					// when u are successfully logged to server and u are indexed there
-					// everything after indexing is here
+					// message handlers accessable after logging in
 					switch(recievedData.type){
-						case 'clients_list':
+						case 'groups_list':
+							$('#groups').empty();
 							console.log(recievedData.message);
+							for(var i = 0; i < recievedData.message.length; i++){
+								var li = $('<li></li>');
+								li.data("id", recievedData.message[i].id);
+								li.html(
+									recievedData.message[i].name + " | " +
+									recievedData.message[i].clients + "&nbsp;&nbsp;&nbsp;"+
+									'<a href="#" class="join">join</a>'
+								)
+								$('#groups').append(li);
+							}
+							$('.join').click(function(e){
+							
+								id = $(this).parent().data('id');
+								data = {
+									type : "group_join",
+									data : {
+										id : id	
+									}
+								};
+								
+								dataString = JSON.stringify(data);
+								
+								socket.send(dataString);
+								
+								e.preventDefault();
+							
+							});
+							break;
+						case 'group__init':
+							if(recievedData.message == 'success'){
+								alert('successfuly made group');	
+							}
+							break;
+						case 'group_join':
+							if(recievedData.message == 'success'){
+								alert('u have been joined');
+							}
 							break;
 						case 'connection__init':
 							break;
@@ -69,11 +146,21 @@ $(function(){
 			
 			socket.onclose = function(e) {
 				if(existingConnect == false){
-					var cs = new ConnectServer();
+					ConnectServer();
 					status.addClass('offline');
 					status.removeClass('online');
 					status.text("offline");
 				}
+			}
+			
+			function groupListRequest(){
+				
+				var data = {
+					type : "groups_list"
+				};
+				
+				dataString = JSON.stringify(data);
+				socket.send(dataString);
 			}
 
 		} else {
@@ -81,7 +168,6 @@ $(function(){
 		}
 	}
 	
-	var cs = new ConnectServer();
+	ConnectServer();
 
-	
 })
