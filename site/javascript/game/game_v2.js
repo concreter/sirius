@@ -4,8 +4,9 @@ var host = "ws://localhost:8877",
 	login_success = false;
 
 function init_socket(){
-
-	user_name = document.getElementById('hdnSession').getAttribute('data-value');
+	
+	session = document.getElementById('hdnSession');
+	user_name = session.getAttribute('data-value');
 	
 	socket = new WebSocket(host);
 	
@@ -51,7 +52,8 @@ var lobbyHandlers = {
 function connection__init(e){
 	if(e == 'success'){
 		login_success = true;
-		console.log("successfully connected")
+		console.log("successfully connected");
+		lobby();
 	} else {
 		socket.close();
 	}
@@ -74,4 +76,3 @@ function sendData(data){
 	socket.send(JSONdata);
 	
 };
-
