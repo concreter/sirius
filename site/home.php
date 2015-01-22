@@ -10,7 +10,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="styles/home_style.css">
     <script src="javascript/jquery.js"></script>
-    <script src="javascript/game/game.js"></script>
+    <script src="javascript/game/lobby.js"></script>
     <link rel="stylesheet" href="styles/chat.css">
 </head>
 <body>
@@ -22,11 +22,11 @@
     <div id="content">
 
     </div>
-    <div id="wraper-bot">
-        <div class="status"></div>
-    </div>
 </body>
 </html>
+<script>
+    init_socket();
+</script>
   
 <?php
         

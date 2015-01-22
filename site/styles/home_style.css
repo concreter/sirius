@@ -5,23 +5,86 @@
 }
 
 body{
-    background-color: #51674d;
+    background-color: #add;
     font-family: arial;
+	height: 100%
+}
+html{
+	height: 100%
 }
 #wraper-top{
     width: 100%;
     padding: 10px;
-    background-color: #265532;
+    background-color: #1e2a2d;
     color: white;
 }
 #user{
     float: right;
 }
 #logout{
-    color:#bada55;
+    color:#fff;
     text-decoration: none;
     font-style: italic;
 }
 #logout:hover{
-    color: #d8ff5d;
+    text-decoration: underline
+}
+#play{
+    box-sizing: border-box;
+    display: block;
+    background-color: #fa771e;
+    width: 200px;
+    margin: -25px auto;
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size:25px
+}
+#creategame{
+    display: block;
+    color: #1e2a2d;
+    width: 10%;
+    text-align: center;
+    margin: 30px auto;
+}
+
+#friend_list{
+	position: fixed;
+	background-color: #1e2a2d;
+	color:white;
+	width: 20%;
+	float: left;
+	list-style: none;
+	text-align: left;
+	padding: 30px;
+	min-height: 100%
+}
+#friend_list > li{
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+#group_clients-wraper{
+	background-color: #1e2a2d;
+	color:white;
+	width: 40%;
+	margin: 10% auto;
+	text-align: center;
+	padding: 30px;
+	min-width: 200px
+}
+h4{
+	margin-top: 50px
+}
+#group_clients{
+	margin-top: 15px;
+	list-style: none;
+	
+}
+#group_clients > li{
+	margin-bottom: 10px;
+	font-weight: bold;
 }

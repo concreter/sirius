@@ -1,4 +1,4 @@
-var host = "ws://localhost:8877",
+var host = "ws://localhost:8873",
 	socket,
 	user_name,
 	login_success = false;
@@ -37,8 +37,14 @@ var lobbyHandlers = {
 		var message = JSON.parse(e.data);
 		if(message.type == 'connection__init'){
 			connection__init(message.message);
-		} else if(message.type == 'game_join'){
-			game_join();
+		} else if(message.type == 'group_join'){
+			if(message.message == 'success'){
+				game_join();
+			}
+		} else if(message.type == 'group_clients'){
+			groupClients(message.message);
+		} else if(message.type == 'game_start'){
+			game();
 		}
 	},
 	onclose : function(e){
@@ -50,17 +56,46 @@ var lobbyHandlers = {
 };
 
 function connection__init(e){
-	if(e == 'success'){
-		login_success = true;
-		console.log("successfully connected");
-		lobby();
+	if(e.success == 'true'){
+		if(e.game_started == 0){
+			console.log("successfully connected");
+			lobby();
+		}else{
+			game();	
+		}
 	} else {
 		socket.close();
 	}
 };
+function game_join(){
+	$(function(){
+        var content = $('#content');
+        content.load("/sirius/site/group_lobby.php");
+	});
+};
 
-function game_join(e){
-	
+function game(){
+	$(function(){
+        var content = $('#content');
+        content.load("/sirius/site/game.php");
+	});
+}
+
+function lobby(){
+	$(function(){
+        var content = $('#content');
+        content.load("/sirius/site/main_menu.php");
+	});
+};
+
+function groupClients(e){
+	$(function(){
+		var groupClients = $('#group_clients');
+		groupClients.html("");
+		for(var i = 0; i < e.length; i++){
+			groupClients.append('<li>'+e[i]+'</li>');
+		}
+	});	
 };
 
 function Data(type, message){
